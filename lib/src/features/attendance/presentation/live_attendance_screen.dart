@@ -298,10 +298,12 @@ class _LiveAttendanceScreenState extends State<LiveAttendanceScreen> {
                       ),
                     ),
                     const SizedBox(height: 15),
-                    Text(
-                      'Please disable the fake GPS before checking in.',
-                      style: getRedTextStyle(fontSize: 14),
-                    )
+                    isMocked
+                        ? Text(
+                            'Please disable the fake GPS before checking in.',
+                            style: getRedTextStyle(fontSize: 14),
+                          )
+                        : const SizedBox(),
                   ],
                 ),
               ),
