@@ -65,6 +65,18 @@ TextStyle getBlackTextStyle({
   );
 }
 
+TextStyle getRedTextStyle({
+  double fontSize = FontSizeManager.f16,
+  FontWeight fontWeight = FontWeighManager.regular,
+}) {
+  return _getTextStyle(
+    fontSize,
+    FontFamilyConstant.fontFamily,
+    fontWeight,
+    ColorManager.red,
+  );
+}
+
 TextStyle getGrey60TextStyle({
   double fontSize = FontSizeManager.f14,
   FontWeight fontWeight = FontWeighManager.regular,
@@ -80,6 +92,16 @@ TextStyle getGrey60TextStyle({
 final ButtonStyle btnPrimaryStyle = ElevatedButton.styleFrom(
   padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
   backgroundColor: ColorManager.primary,
+  shape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(
+      Radius.circular(10),
+    ),
+  ),
+);
+
+final ButtonStyle btnDisabledStyle = ElevatedButton.styleFrom(
+  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+  backgroundColor: ColorManager.grey,
   shape: const RoundedRectangleBorder(
     borderRadius: BorderRadius.all(
       Radius.circular(10),

@@ -37,6 +37,7 @@ class _LiveAttendanceScreenState extends State<LiveAttendanceScreen> {
   );
   BitmapDescriptor? customIcon;
   bool isLocationEnabled = false;
+  bool isMocked = false;
 
   @override
   void initState() {
@@ -97,8 +98,23 @@ class _LiveAttendanceScreenState extends State<LiveAttendanceScreen> {
       return;
     }
 
-    Position position = await Geolocator.getCurrentPosition();
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    if (position.isMocked) {
+      showDialog(
+        // ignore: use_build_context_synchronously
+        context: context,
+        builder: (context) {
+          return CustomAlertDialog(
+            title: 'Warning',
+            content: 'Fake Location Detected.',
+            onOkPressed: () => Navigator.of(context).pop(),
+          );
+        },
+      );
+    }
     setState(() {
+      isMocked = position.isMocked;
       lat = position.latitude;
       long = position.longitude;
       isLocationEnabled = true;
@@ -268,8 +284,12 @@ class _LiveAttendanceScreenState extends State<LiveAttendanceScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        style: btnPrimaryStyle,
-                        onPressed: _checkDistance,
+                        style: isMocked ? btnDisabledStyle : btnPrimaryStyle,
+                        onPressed: () {
+                          if (!isMocked) {
+                            _checkDistance();
+                          }
+                        },
                         child: Text(
                           'Check in',
                           style: getWhiteTextStyle(
@@ -277,6 +297,11 @@ class _LiveAttendanceScreenState extends State<LiveAttendanceScreen> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 15),
+                    Text(
+                      'Please disable the fake GPS before checking in.',
+                      style: getRedTextStyle(fontSize: 14),
+                    )
                   ],
                 ),
               ),
