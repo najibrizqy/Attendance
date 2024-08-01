@@ -52,6 +52,9 @@ class _LiveAttendanceScreenState extends State<LiveAttendanceScreen> {
 
     if (latLong['latitude'] == null) {
       _saveLatLong(lat, long);
+      setState(() {
+        circleCenter = LatLng(lat, long);
+      });
     } else {
       log('latitude ${latLong['latitude']} - longitude ${latLong['longitude']}');
       setState(() {
